@@ -1,0 +1,61 @@
+name: Terraform Azure Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AZURE_CLIENT_ID: 6b541511-d6ec-44a8-ba28-a62f85c4aa8f
+  AZURE_SUBSCRIPTION_ID: ebf257b6-11b1-4f28-b540-3ec53e66cb8f
+  AZURE_TENANT_ID: 30e3b541-d0bb-4f43-b986-0574b7a8193e
+
+  ARM_CLIENT_ID: 6b541511-d6ec-44a8-ba28-a62f85c4aa8f
+  ARM_SUBSCRIPTION_ID: ebf257b6-11b1-4f28-b540-3ec53e66cb8f
+  ARM_TENANT_ID: 30e3b541-d0bb-4f43-b986-0574b7a8193e
+  ARM_USE_OIDC: true
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: 6b541511-d6ec-44a8-ba28-a62f85c4aa8f
+          tenant-id: 30e3b541-d0bb-4f43-b986-0574b7a8193e
+          subscription-id: ebf257b6-11b1-4f28-b540-3ec53e66cb8f
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - - name: Terraform Init
+  working-directory: ./terraform
+  run: terraform init
+
+- name: Terraform Format
+  working-directory: ./terraform
+  run: terraform fmt -check -recursive
+
+- name: Terraform Validate
+  working-directory: ./terraform
+  run: terraform validate
+
+- name: Terraform Plan
+  working-directory: ./terraform
+  run: terraform plan -out=tfplan
+
+- name: Terraform Apply
+  working-directory: ./terraform
+  run: terraform apply -auto-approve tfplan
