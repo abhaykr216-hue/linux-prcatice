@@ -13,11 +13,3 @@ variable "virtual_network_name" {
 variable "address_prefixes" {
   type = list(string)
 }
-
-output "name" {
-  value = azurerm_subnet.jio_subnet.name
-}
-
-output "id" {
-  value = azurerm_subnet.jio_subnet.id
-}

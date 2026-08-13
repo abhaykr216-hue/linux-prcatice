@@ -17,11 +17,3 @@ variable "address_space" {
 variable "tags" {
   type = map(string)
 }
-
-output "name" {
-  value = azurerm_virtual_network.jio_vnet.name
-}
-
-output "id" {
-  value = azurerm_virtual_network.jio_vnet.id
-}
