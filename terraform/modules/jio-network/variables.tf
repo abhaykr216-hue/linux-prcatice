@@ -1,27 +1,11 @@
-variable "location" {
-  type = string
-}
-
-variable "resource_group_name" {
-  type = string
-}
-
-variable "vnet_name" {
-  type = string
-}
-
-variable "address_space" {
-  type = list(string)
-}
-
-variable "subnet_name" {
-  type = string
-}
-
-variable "subnet_address_prefixes" {
-  type = list(string)
-}
-
-variable "tags" {
-  type = map(string)
+variable "jioqa" {
+  type = object({
+    location             = string
+    resource_group_name  = string
+    vnet_name            = string
+    address_space        = list(string)
+    subnets              = map(string)
+    storage_account_name = string
+    tags                 = map(string)
+  })
 }
